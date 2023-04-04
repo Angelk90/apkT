@@ -51,10 +51,6 @@ const Example = () => {
   return (
       <View
         style={[
-          Layout.fill,
-          Layout.fullWidth,
-          Layout.justifyContentCenter,
-          Layout.alignItemsCenter,
         ]}>
         <TextInput
           dense
