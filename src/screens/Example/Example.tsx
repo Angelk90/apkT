@@ -30,15 +30,6 @@ const Example = () => {
   } = useTheme();
   const dispatch = useDispatch();
 
-  const [fetchOne, { data, isSuccess, isLoading, isFetching }] =
-    useLazyFetchOneQuery();
-
-  useEffect(() => {
-    if (isSuccess && data?.name) {
-      Alert.alert(t('example:helloUser', { name: data.name }));
-    }
-  }, [isSuccess, data]);
-
   const onChangeTheme = ({ theme, darkMode }: Partial<ThemeState>) => {
     dispatch(changeTheme({ theme, darkMode }));
   };
@@ -47,16 +38,7 @@ const Example = () => {
     i18next.changeLanguage(lang);
   };
 
-  const [dishs, setDishs] = React.useState([
-    {
-      dish: 7,
-      times: 1,
-    },
-    {
-      dish: 3,
-      times: 1,
-    },
-  ]);
+  const [dishs, setDishs] = React.useState([]);
 
   const [order, setOrder] = React.useState(false);
 
@@ -67,18 +49,9 @@ const Example = () => {
   };
 
   return (
-    <ScrollView
-      style={Layout.fill}
-      contentContainerStyle={[
-        Layout.fullSize,
-        Layout.fill,
-        Layout.colCenter,
-        Layout.scrollSpaceBetween,
-      ]}>
       <View
         style={[
           Layout.fill,
-          Layout.relative,
           Layout.fullWidth,
           Layout.justifyContentCenter,
           Layout.alignItemsCenter,
@@ -98,7 +71,6 @@ const Example = () => {
             else {
               const clone = JSON.parse(JSON.stringify(dishs));
               clone[found].times++;
-              console.log(clone, dishs);
               setDishs(clone);
             }
           }}
@@ -134,7 +106,6 @@ const Example = () => {
           </View>
         ))}
       </View>
-    </ScrollView>
   );
 };
 
