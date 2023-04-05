@@ -38,8 +38,8 @@ const Example = () => {
     i18next.changeLanguage(lang);
   };
 
+  const [value, setValue] = React.useState('');
   const [dishs, setDishs] = React.useState([]);
-
   const [order, setOrder] = React.useState(false);
 
   const dishOrder = () => {
@@ -48,60 +48,69 @@ const Example = () => {
     else return dishs;
   };
 
+  const checkNumber = (array, numb) => {
+    return array.findIndex(({ dish }) => dish === parseInt(numb));
+  };
+
+  const addNumber = (numb) => {
+    const found = checkNumber(dishs, numb);
+    if (found === -1) setDishs([...dishs, { dish: parseInt(numb), times: 1 }]);
+    else {
+      const clone = JSON.parse(JSON.stringify(dishs));
+      clone[found].times++;
+      setDishs(clone);
+    }
+  };
+
   return (
-      <View
-        style={[
-        ]}>
-        <TextInput
-          dense
-          mode="outlined"
-          label="Dish"
-          placeholder="Dish"
-          keyboardType="numeric"
-          maxLength={3}
-          onSubmitEditing={({ nativeEvent: { text } }) => {
-            if (text === '') return;
-            const found = dishs.findIndex((el) => el.dish === parseInt(text));
-            if (found === -1)
-              setDishs([...dishs, { dish: parseInt(text), times: 1 }]);
-            else {
-              const clone = JSON.parse(JSON.stringify(dishs));
-              clone[found].times++;
-              setDishs(clone);
-            }
-          }}
-        />
-        <Button
+    <View style={[]}>
+      <TextInput
+        dense
+        mode="outlined"
+        label="Dish"
+        placeholder="Dish"
+        keyboardType="numeric"
+        maxLength={3}
+        value={value}
+        onChangeText={setValue}
+        onSubmitEditing={({ nativeEvent: { text } }) => {
+          setValue('');
+          if (text === '' || isNaN(text)) return;
+          addNumber(text);
+        }}
+      />
+      <Button
+        style={{
+          backgroundColor: '#1E90FF',
+          margin: 4,
+        }}
+        mode="contained"
+        onPress={() => setOrder(!order)}>
+        Order by number
+      </Button>
+      {dishOrder().map(({ dish, times }) => (
+        <View
           style={{
-            backgroundColor: '#1E90FF',
-            margin: 4,
-          }}
-          mode="contained"
-          onPress={() => setOrder(!order)}>
-          Order by number
-        </Button>
-        {dishOrder().map(({ dish, times }) => (
-          <View
+            padding: 8,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Badge
             style={{
-              padding: 8,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              backgroundColor: '#1E90FF',
             }}>
-            <Badge
-              style={{
-                backgroundColor: '#1E90FF',
-              }}>
-              {dish}
-            </Badge>
-            <Badge
-              style={{
-                backgroundColor: 'powderblue',
-              }}>
-              {times}
-            </Badge>
-          </View>
-        ))}
-      </View>
+            {dish}
+          </Badge>
+          <Badge
+            style={{
+              backgroundColor: 'powderblue',
+            }}
+            onPress={() => addNumber(dish)}>
+            {times}
+          </Badge>
+        </View>
+      ))}
+    </View>
   );
 };
 
