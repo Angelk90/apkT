@@ -69,7 +69,7 @@ const Example = () => {
         mode="outlined"
         label="Dish"
         placeholder="Dish"
-        keyboardType="numeric"
+        keyboardType="phone-pad"
         maxLength={3}
         value={value}
         onChangeText={setValue}
