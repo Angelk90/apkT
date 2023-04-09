@@ -15,7 +15,9 @@ import { useTheme } from '../../hooks';
 import { useLazyFetchOneQuery } from '../../services/modules/users';
 import { changeTheme, ThemeState } from '../../store/theme';
 import i18next from 'i18next';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Badge, TextInput, Button } from 'react-native-paper';
 
 const Example = () => {
@@ -34,7 +36,7 @@ const Example = () => {
     dispatch(changeTheme({ theme, darkMode }));
   };
 
-  const onChangeLanguage = (lang: 'fr' | 'en') => {
+  const onChangeLanguage = (lang: 'en' | 'it') => {
     i18next.changeLanguage(lang);
   };
 
@@ -44,7 +46,7 @@ const Example = () => {
 
   const dishOrder = () => {
     const clone = JSON.parse(JSON.stringify(dishs));
-    if (order) return clone.sort((a, b) => a.dish - b.dish);
+    if (order) return clone.sort((a: number, b: number) => a.dish - b.dish);
     else return dishs;
   };
 
@@ -63,53 +65,103 @@ const Example = () => {
   };
 
   return (
-    <View style={[]}>
-      <TextInput
-        dense
-        mode="outlined"
-        label="Dish"
-        placeholder="Dish"
-        keyboardType="phone-pad"
-        maxLength={3}
-        value={value}
-        onChangeText={setValue}
-        onSubmitEditing={({ nativeEvent: { text } }) => {
-          setValue('');
-          if (text === '' || isNaN(text)) return;
-          addNumber(text);
-        }}
-      />
-      <Button
-        style={{
-          backgroundColor: '#1E90FF',
-          margin: 4,
-        }}
-        mode="contained"
-        onPress={() => setOrder(!order)}>
-        Order by number
-      </Button>
-      {dishOrder().map(({ dish, times }) => (
-        <View
-          style={{
-            padding: 8,
+    <View style={[Layout.fill, Gutters.smallPadding, {}]}>
+      <View
+        style={[
+          {
             flexDirection: 'row',
             justifyContent: 'space-between',
-          }}>
-          <Badge
+            alignItems: 'center',
+          },
+        ]}>
+        <TextInput
+          dense
+          mode="outlined"
+          label="Dish"
+          placeholder="Dish"
+          keyboardType="phone-pad"
+          maxLength={3}
+          value={value}
+          onChangeText={setValue}
+          onSubmitEditing={({ nativeEvent: { text } }) => {
+            setValue('');
+            if (text === '' || isNaN(text)) return;
+            addNumber(text);
+          }}
+          theme={{
+            colors: {
+              placeholder: isDark ? '#FFFFFF' : '#000',
+              text: '#1E90FF',
+              primary: '#1E90FF',
+              background: isDark ? '#1B1A23' : "#EFEFEF"
+            },
+          }}
+          style={[
+            {
+              width: 60,
+            },
+          ]}
+        />
+        <Button
+          style={{
+            backgroundColor: '#1E90FF',
+            width: 160,
+            height: 40,
+          }}
+          mode="contained"
+          onPress={() => setOrder(!order)}>
+          Order by {order ? 'dish' : 'number'}
+        </Button>
+      </View>
+
+      <SwipeListView
+        data={dishOrder().map((el, i) => ({
+          ...el,
+          key: `${i}`,
+          text: `${el.dish}`,
+        }))}
+        keyExtractor={(item) => `${item.key}`}
+        renderItem={({ item }) => (
+          <View
             style={{
-              backgroundColor: '#1E90FF',
+              padding: 15,
+              backgroundColor: '#fff',
+              height: 50,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderRadius: 4,
+              margin: 2,
             }}>
-            {dish}
-          </Badge>
-          <Badge
-            style={{
-              backgroundColor: 'powderblue',
-            }}
-            onPress={() => addNumber(dish)}>
-            {times}
-          </Badge>
-        </View>
-      ))}
+            <Badge
+              style={{
+                backgroundColor: '#1E90FF',
+              }}>
+              {item.dish}
+            </Badge>
+            <Badge
+              style={{
+                backgroundColor: '#b0e0e6',
+              }}
+              onPress={() => addNumber(item.dish)}>
+              {item.times}
+            </Badge>
+          </View>
+        )}
+        renderHiddenItem={({ item }, rowMap) => <View style={{}}></View>}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+        style={{
+          marginTop: 10,
+        }}
+      />
     </View>
   );
 };

@@ -6,6 +6,8 @@ import com.android.build.OutputFile
 // On top of your file import a JSON parser
 import groovy.json.JsonSlurper
 
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 // Create an easy to use function
 def getVersionFromPackageJson() {
     //  Read and parse package.json file from project root
