@@ -34,3 +34,10 @@ jobs:
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
+          
+      - uses: EBfVince/action-discord@master
+        with:
+           args: "https://github.com/Angelk90/apkT/releases/download/v${{ steps.package-version.outputs.version }}/app-release.apk"
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+            DISCORD_MULTILINE: 1
