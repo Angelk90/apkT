@@ -1,18 +1,8 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  ActivityIndicator,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Alert,
-} from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Brand } from '../../components';
 import { useTheme } from '../../hooks';
-import { useLazyFetchOneQuery } from '../../services/modules/users';
 import { changeTheme, ThemeState } from '../../store/theme';
 import i18next from 'i18next';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -65,13 +55,14 @@ const Example = () => {
   };
 
   return (
-    <View style={[Layout.fill, Gutters.smallPadding, {}]}>
+    <View style={[{}]}>
       <View
         style={[
           {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            //flexDirection: 'row',
+            //justifyContent: 'space-between',
+            //alignItems: 'flex-end',
+            backgroundColor: '#000cca',
           },
         ]}>
         <TextInput
@@ -93,20 +84,17 @@ const Example = () => {
               placeholder: isDark ? '#FFFFFF' : '#000',
               text: '#1E90FF',
               primary: '#1E90FF',
-              background: isDark ? '#1B1A23' : "#EFEFEF"
+              background: isDark ? '#1B1A23' : '#EFEFEF',
             },
           }}
-          style={[
-            {
-              width: 60,
-            },
-          ]}
+          //style={{flexGrow: 1}}
         />
         <Button
           style={{
             backgroundColor: '#1E90FF',
             width: 160,
             height: 40,
+            marginLeft: 2,
           }}
           mode="contained"
           onPress={() => setOrder(!order)}>
