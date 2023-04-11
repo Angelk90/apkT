@@ -36,7 +36,7 @@ jobs:
           
       - uses: EBfVince/action-discord@master
         with:
-           args: "https://github.com/Angelk90/apkT/releases/download/v${{ steps.package-version.outputs.version }}/app-release.apk"
+           args: "https://github.com/${{ github.GITHUB_REPOSITORY }}/releases/download/v${{ steps.package-version.outputs.version }}/app-release.apk"
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             DISCORD_MULTILINE: 1
